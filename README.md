@@ -15,26 +15,25 @@ Then open the printed local URL.
 
 ## Features
 
-- **Materials** — define material types (e.g. `2x4`, `3/4" plywood`) with default
-  width × height × length and a color. A few common ones are seeded.
-- **Pieces** — click **+ piece** on a material to drop an instance into the 3D scene.
-  Each piece has editable W/H/L, X/Y/Z position, and X/Y/Z rotation (degrees).
-  Position is the piece's origin corner (its minimum corner when unrotated), and
-  rotation pivots around that corner.
-- **3D editing** — click a piece to select it; drag to move it on the ground plane;
-  shift-drag to raise/lower it. Drag near an edge or corner to resize the width or
-  length on that side, with the opposite face staying put. Left-drag empty
-  space to orbit (including below the ground plane, to view from underneath),
-  right-drag to pan, scroll to zoom.
-- **Units** — toggle between imperial (fractional inches) and metric (mm) in the header.
-  All values are stored in inches internally; the toggle changes display and input only.
-- **Snap** — optional snapping while dragging: moves snap to 1/2" (10 mm metric),
-  edge resizes snap to 1" (10 mm metric).
-- **Cut list** — pieces grouped by material type and size (thickness × width × length)
-  with quantities. Clicking a row selects each piece of that size in turn.
-- **Keyboard** — `Delete`/`Backspace` removes the selected piece, `d` duplicates it,
-  `Escape` deselects. In dimension/position fields, `↑`/`↓` step by 1/8" (1 mm) and
-  `Shift+↑`/`↓` step by a whole inch (10 mm), snapping to whole multiples.
-- **Projects** — the working plan autosaves to `localStorage` continuously. The header
-  also lets you save/load named projects (stored in `localStorage`), and export/import
-  a project as a plain-text JSON file.
+- **Materials** — define material types (e.g. `2x4`, `3/4" plywood`) with stock
+  dimensions and a color, then drop pieces of them into the 3D scene.
+- **Fixed vs. variable dimensions** — each material marks which dimensions are
+  fixed to the stock size (a 2x4's width and thickness, a sheet's thickness).
+  Fixed dimensions can't be resized on pieces; variable ones can be cut to any size.
+- **Cut list & cut diagrams** — pieces are grouped by material and size with
+  quantities and a buy count of how many boards/sheets you need. Each material's
+  cut diagram shows how to cut the pieces from stock: sheet goods use an efficient
+  guillotine layout (every cut runs edge to edge, like a table saw) with same-size
+  pieces sharing cut lines, dimensional lumber is packed along its length, and all
+  cuts include a 1/8" kerf allowance.
+- **X-ray view** — renders pieces as translucent outlines so you can see through
+  the assembly, and highlights in red the exact volume where any two pieces
+  overlap or collide.
+
+Plus the basics: drag to move and resize pieces in 3D, imperial/metric units,
+snapping, undo/redo, keyboard shortcuts, and autosave with named projects and
+JSON import/export.
+
+## License
+
+[MIT](LICENSE)

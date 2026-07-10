@@ -2,7 +2,9 @@
 
 https://github.com/user-attachments/assets/be23af57-0b93-438e-b8fa-b518c8df8e5a
 
-A single-page, client-side-only 3D woodworking plan editor built with Svelte 5 and Three.js.
+A simple, offline, web-based 3D woodworking plan editor.
+
+Built with Svelte and Three.js.
 
 ## Usage
 

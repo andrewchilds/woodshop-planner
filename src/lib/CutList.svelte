@@ -37,11 +37,11 @@
     return out;
   });
 
-  // Stock purchase estimate per material id.
+  // Stock purchase estimate per material id, for all copies being built.
   const needs = $derived.by(() => {
     const map = new Map();
     for (const m of plan.materials) {
-      const n = stockNeeded(m, plan.pieces.filter((p) => p.materialId === m.id));
+      const n = stockNeeded(m, plan.pieces.filter((p) => p.materialId === m.id), plan.quantity);
       if (n) map.set(m.id, n);
     }
     return map;
@@ -105,7 +105,7 @@
           onclick={() => cycle(s.ids)}
           title="Click to select each piece of this size in turn"
         >
-          <span class="qty">{s.ids.length}×</span>
+          <span class="qty">{s.ids.length * (plan.quantity || 1)}×</span>
           {@render dims(s, fx)}
         </button>
       {/each}

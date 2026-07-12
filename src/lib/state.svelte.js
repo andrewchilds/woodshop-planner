@@ -5,7 +5,7 @@ import { Vector3, Euler } from 'three';
 // corner when unrotated); rotation pivots around that corner.
 const STORAGE_KEY = 'woodshop-planner-v1';
 const PROJECTS_KEY = 'woodshop-planner-projects';
-const FORMAT_VERSION = 3;
+const FORMAT_VERSION = 4;
 const DEG = Math.PI / 180;
 
 function defaults() {
@@ -13,6 +13,7 @@ function defaults() {
     name: 'Untitled',
     units: 'imperial', // 'imperial' | 'metric'
     snap: true,
+    quantity: 1, // copies to build — multiplies the cut list and stock, not the scene
     materials: [
       { id: 1, name: '2x4', w: 3.5, h: 1.5, l: 96, color: '#d9a765', fixed: ['w', 'h'] },
       { id: 2, name: '2x6', w: 5.5, h: 1.5, l: 96, color: '#c98f4e', fixed: ['w', 'h'] },
@@ -30,6 +31,7 @@ function defaults() {
 
 // v1 stored piece positions as the box center; convert to corner origin.
 // v2 materials had no fixed dims; guess sheet goods by width, lumber otherwise.
+// v3 plans had no build quantity; default to one copy.
 function migrate(data) {
   const v = data.version ?? 1;
   if (v < 2 && data.pieces) {
@@ -46,6 +48,9 @@ function migrate(data) {
     for (const m of data.materials) {
       m.fixed ??= m.w >= 12 ? ['h'] : ['w', 'h'];
     }
+  }
+  if (v < 4) {
+    data.quantity ??= 1;
   }
   return data;
 }
@@ -73,13 +78,13 @@ function refreshNextId() {
 }
 
 export function serialize() {
-  const { name, units, snap, materials, pieces } = plan;
+  const { name, units, snap, quantity, materials, pieces } = plan;
   // Strip undefined name fields from pieces to keep serialized output clean.
   const cleanPieces = pieces.map((p) => {
     const { name: pName, ...rest } = p;
     return pName ? { ...rest, name: pName } : rest;
   });
-  return JSON.stringify({ version: FORMAT_VERSION, name, units, snap, materials, pieces: cleanPieces });
+  return JSON.stringify({ version: FORMAT_VERSION, name, units, snap, quantity, materials, pieces: cleanPieces });
 }
 
 export function persist(json) {
@@ -92,6 +97,7 @@ function applyData(data) {
   plan.name = d.name;
   plan.units = d.units;
   plan.snap = d.snap;
+  plan.quantity = d.quantity;
   plan.materials = d.materials;
   plan.pieces = d.pieces;
   plan.selectedId = null;
@@ -130,6 +136,7 @@ function applySnapshot(json) {
   plan.name = d.name;
   plan.units = d.units;
   plan.snap = d.snap;
+  plan.quantity = d.quantity ?? 1;
   plan.materials = d.materials;
   plan.pieces = d.pieces;
   if (plan.selectedId != null && !plan.pieces.some((p) => p.id === plan.selectedId)) {

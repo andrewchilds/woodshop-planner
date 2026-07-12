@@ -198,8 +198,10 @@ function sheetCuts(bin, binW, binH) {
 //     unplacedSizes,         // [{ w, h }] of the pieces that fit nowhere
 //   }
 // Boards are laid out as a top view: x along the free axis, full-width cuts.
-export function stockNeeded(material, pieces) {
+// `quantity` packs that many copies of every piece (building N of the plan).
+export function stockNeeded(material, pieces, quantity = 1) {
   if (!pieces.length) return null;
+  if (quantity > 1) pieces = Array.from({ length: quantity }, () => pieces).flat();
   const fixed = new Set(material.fixed ?? []);
   const free = DIMS.filter((d) => !fixed.has(d));
   if (free.length === 1) {

@@ -47,7 +47,7 @@
   const diagram = $derived.by(() => {
     const m = plan.materials.find((m) => m.id === plan.cutDiagramId);
     if (!m) return null;
-    const stock = stockNeeded(m, plan.pieces.filter((p) => p.materialId === m.id));
+    const stock = stockNeeded(m, plan.pieces.filter((p) => p.materialId === m.id), plan.quantity);
     return stock ? { material: m, stock } : null;
   });
 

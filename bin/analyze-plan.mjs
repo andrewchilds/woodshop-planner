@@ -43,7 +43,8 @@ const mats = Object.fromEntries(plan.materials.map((m) => [m.id, m.name]));
 const boxes = plan.pieces.map((p) => ({ p, b: aabb(p) }));
 boxes.sort((A, B) => A.b.min[1] - B.b.min[1] || A.b.min[0] - B.b.min[0] || A.b.min[2] - B.b.min[2]);
 
-console.log(`# ${plan.name} — ${plan.pieces.length} pieces`);
+const qty = plan.quantity ?? 1;
+console.log(`# ${plan.name} — ${plan.pieces.length} pieces${qty > 1 ? ` × ${qty} builds` : ''}`);
 for (const { p, b } of boxes) {
   const name = p.name ? ` "${p.name}"` : '';
   console.log(`  #${p.id}${name} [${mats[p.materialId]}] ${p.w}x${p.h}x${p.l} rot(${p.rx},${p.ry},${p.rz})  ${fmt(b)}`);
@@ -72,7 +73,7 @@ console.log(overlaps ? `${overlaps} overlap(s)` : 'no overlaps');
 
 console.log('STOCK:');
 for (const m of plan.materials) {
-  const n = stockNeeded(m, plan.pieces.filter((p) => p.materialId === m.id));
+  const n = stockNeeded(m, plan.pieces.filter((p) => p.materialId === m.id), qty);
   if (!n) continue;
   const unplaced = n.unplaced ? `  (${n.unplaced} piece${n.unplaced > 1 ? 's' : ''} too big to cut!)` : '';
   console.log(`  ${m.name}: ${n.count} ${n.unit}${n.count > 1 ? 's' : ''}${unplaced}`);

@@ -41,6 +41,9 @@
       buy {stock.count}
       {stock.unit}{stock.count === 1 ? '' : 's'} ·
       {formatLen(stock.binW, plan.units)} × {formatLen(stock.binH, plan.units)} stock
+      {#if plan.quantity > 1}
+        · for {plan.quantity} builds
+      {/if}
     </span>
     <button class="btn no-print" onclick={() => window.print()} title="Print cut diagram">
       <Printer size={14} /> Print

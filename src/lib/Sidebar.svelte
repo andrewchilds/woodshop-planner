@@ -164,10 +164,28 @@
   <section>
     <div class="sec-head">
       <h3>Cut list</h3>
-      <label class="grouped-toggle" title="Group identical sizes into one row">
-        <input type="checkbox" bind:checked={plan.cutListGrouped} />
-        Grouped
-      </label>
+      <div class="cut-opts">
+        <label
+          class="qty-label"
+          title="How many of this project to build — multiplies the cut list and stock estimate"
+        >
+          Qty
+          <input
+            type="number"
+            min="1"
+            step="1"
+            value={plan.quantity}
+            onchange={(e) => {
+              plan.quantity = Math.max(1, Math.round(+e.currentTarget.value) || 1);
+              e.currentTarget.value = plan.quantity;
+            }}
+          />
+        </label>
+        <label class="grouped-toggle" title="Group identical sizes into one row">
+          <input type="checkbox" bind:checked={plan.cutListGrouped} />
+          Grouped
+        </label>
+      </div>
     </div>
     <CutList />
   </section>
@@ -205,6 +223,24 @@
 
   .sec-head h3 {
     margin: 0;
+  }
+
+  .cut-opts {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .qty-label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    color: #4b5563;
+  }
+
+  .qty-label input {
+    width: 42px;
   }
 
   .grouped-toggle {

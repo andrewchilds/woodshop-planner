@@ -7,6 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `npm run dev` — dev server on port 5191 (strictPort; fails if taken)
 - `npm run build` — production build to `dist/`
 - `npm run preview` — serve the build, also on 5191
+- `node bin/analyze-plan.mjs <plan.json>` — world bounding box per piece, overall dims, overlap check, and stock estimate for a plan file; the way to verify plan geometry without the UI
 
 There are no tests or linters.
 

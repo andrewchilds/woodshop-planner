@@ -3,6 +3,7 @@
   import Sidebar from './lib/Sidebar.svelte';
   import PropertiesPanel from './lib/PropertiesPanel.svelte';
   import CutDiagram from './lib/CutDiagram.svelte';
+  import Dropdown from './lib/Dropdown.svelte';
   import { stockNeeded } from './lib/stock.js';
   import Undo2 from '@lucide/svelte/icons/undo-2';
   import Redo2 from '@lucide/svelte/icons/redo-2';
@@ -19,6 +20,7 @@
     duplicatePiece,
     saveProject,
     loadProject,
+    deleteProject,
     exportText,
     importText,
     history,
@@ -57,12 +59,14 @@
     setTimeout(() => (savedFlash = false), 1200);
   }
 
-  function onLoadSelect(e) {
-    const name = e.currentTarget.value;
-    e.currentTarget.value = '';
-    if (!name) return;
+  function onLoadSelect(name) {
     if (plan.pieces.length && !confirm(`Load "${name}" and replace the current plan?`)) return;
     loadProject(name);
+  }
+
+  function onDeleteProject(name) {
+    if (!confirm(`Delete the saved project "${name}"?`)) return;
+    deleteProject(name);
   }
 
   function exportFile() {
@@ -136,12 +140,12 @@
       <button class="btn" onclick={onSave}>
         {#if savedFlash}<Check size={14} /> Saved{:else}<Save size={14} /> Save{/if}
       </button>
-      <select class="load" value="" onchange={onLoadSelect} title="Load a saved project">
-        <option value="" disabled>Load…</option>
-        {#each projectStore.names as n (n)}
-          <option value={n}>{n}</option>
-        {/each}
-      </select>
+      <Dropdown
+        label="Load…"
+        items={projectStore.names}
+        onselect={onLoadSelect}
+        ondelete={onDeleteProject}
+      />
       <button class="btn" onclick={exportFile}><Download size={14} /> Export</button>
       <button class="btn" onclick={() => fileInput.click()}><Upload size={14} /> Import</button>
       <input
@@ -226,11 +230,6 @@
 
   .proj .name {
     width: 160px;
-  }
-
-  .proj .load {
-    width: 90px;
-    color: #4b5563;
   }
 
   .seg {

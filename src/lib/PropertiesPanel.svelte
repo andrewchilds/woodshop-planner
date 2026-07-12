@@ -40,6 +40,16 @@
     <h3>Selected piece</h3>
     {#if sel}
       <label class="field">
+        Name
+        <input
+          type="text"
+          placeholder="(optional)"
+          value={sel.name ?? ''}
+          oninput={(e) => (sel.name = e.currentTarget.value || undefined)}
+        />
+      </label>
+
+      <label class="field">
         Material
         <select
           value={sel.materialId}

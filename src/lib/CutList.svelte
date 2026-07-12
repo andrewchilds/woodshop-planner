@@ -137,6 +137,9 @@
             title="Click to select this piece"
           >
             {@render dims(p, fx)}
+            {#if p.name}
+              <span class="piece-name">{p.name}</span>
+            {/if}
           </button>
         </div>
       {/each}
@@ -268,5 +271,16 @@
     min-width: 26px;
     font-weight: 600;
     color: #111827;
+  }
+
+  .piece-name {
+    flex: 1;
+    min-width: 0;
+    text-align: right;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #6b7280;
+    font-size: 12px;
   }
 </style>

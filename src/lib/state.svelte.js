@@ -74,7 +74,12 @@ function refreshNextId() {
 
 export function serialize() {
   const { name, units, snap, materials, pieces } = plan;
-  return JSON.stringify({ version: FORMAT_VERSION, name, units, snap, materials, pieces });
+  // Strip undefined name fields from pieces to keep serialized output clean.
+  const cleanPieces = pieces.map((p) => {
+    const { name: pName, ...rest } = p;
+    return pName ? { ...rest, name: pName } : rest;
+  });
+  return JSON.stringify({ version: FORMAT_VERSION, name, units, snap, materials, pieces: cleanPieces });
 }
 
 export function persist(json) {

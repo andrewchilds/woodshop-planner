@@ -4,6 +4,7 @@
   import PropertiesPanel from './lib/PropertiesPanel.svelte';
   import CutDiagram from './lib/CutDiagram.svelte';
   import Dropdown from './lib/Dropdown.svelte';
+  import GitHubIcon from './lib/GitHubIcon.svelte';
   import { stockNeeded } from './lib/stock.js';
   import Undo2 from '@lucide/svelte/icons/undo-2';
   import Redo2 from '@lucide/svelte/icons/redo-2';
@@ -128,7 +129,12 @@
 
 <div class="app" class:hidden={diagram != null}>
   <header>
-    <h1>Woodshop Planner</h1>
+    <div class="logo">
+      <h1>Woodshop Planner</h1>
+      <a href="https://github.com/andrewchilds/woodshop-planner" target="_blank" rel="noopener" title="View on GitHub">
+        <GitHubIcon />
+      </a>
+    </div>
     <div class="proj">
       <button class="btn" onclick={undo} disabled={!history.canUndo} title="Undo (⌘Z)">
         <Undo2 size={14} />
@@ -207,6 +213,21 @@
     padding: 8px 16px;
     background: #ffffff;
     border-bottom: 1px solid #e2e5e9;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .logo a {
+    display: flex;
+    color: #6b7280;
+  }
+
+  .logo a:hover {
+    color: #111827;
   }
 
   h1 {
